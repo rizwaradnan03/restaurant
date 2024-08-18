@@ -2,7 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+body {
+  background: #f1f1f1;
+  font-family: "Open Sans", sans-serif;
+}
+
+.main .sidebarWrapper {
+  height: 100vh;
+}
+
+.main .sidebarWrapper .sidebar {
+  height: 100vh;
+  background: #fff;
+}
+
+.main .sidebarWrapper .sidebar .sidebarTabs button {
+  justify-content: flex-start !important;
+  color: #222222;
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.main .sidebarWrapper .sidebar .sidebarTabs button svg {
+  font-size: 20px;
+}
+
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
@@ -30,4 +58,4 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-}
+} */
