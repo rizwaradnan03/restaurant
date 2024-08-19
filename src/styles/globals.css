@@ -24,10 +24,19 @@ body {
   text-transform: capitalize;
   font-size: 14px;
   font-weight: 600;
+  padding: 2px 10px !important;
 }
 
 .main .sidebarWrapper .sidebar .sidebarTabs button svg {
   font-size: 20px;
+}
+
+.main .sidebarWrapper .sidebar .sidebarTabs button .arrow svg {
+  font-size: 14px;
+}
+
+.main .sidebarWrapper .sidebar .sidebarTabs button:hover {
+  background: #f1f1f1 !important;
 }
 
 /* :root {
