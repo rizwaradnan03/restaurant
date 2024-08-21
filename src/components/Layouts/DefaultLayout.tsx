@@ -3,7 +3,11 @@ import React, { useState, ReactNode } from "react";
 import SideBar from "@/components/Sidebar/SideBar";
 import NavBar from "@/components/Header/NavBar";
 
-export default function DefaultLayout({ children }) {
+interface DefaultLayoutInterface {
+  children: ReactNode;
+}
+
+export default function DefaultLayout({ children }: DefaultLayoutInterface) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <>

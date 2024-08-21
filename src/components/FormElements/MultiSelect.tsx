@@ -1,18 +1,29 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const MultiSelect = ({ id }) => {
-  const [options, setOptions] = useState([]);
-  const [selected, setSelected] = useState([]);
+interface Option {
+  value: string;
+  text: string;
+  selected: boolean;
+  element?: HTMLElement;
+}
+
+interface MultiSelectProps {
+  id: string; // Perbaikan tipe
+}
+
+const MultiSelect = ({ id }: MultiSelectProps) => {
+  const [options, setOptions] = useState<Option[]>([]);
+  const [selected, setSelected] = useState<number[]>([]);
   const [show, setShow] = useState(false);
-  const dropdownRef = useRef(null);
-  const trigger = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const trigger = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const loadOptions = () => {
-      const select = document.getElementById(id);
+      const select = document.getElementById(id) as HTMLSelectElement;
       if (select) {
-        const newOptions = [];
-        for (let i = 0; i < select.options.length; i++) {
+        const newOptions: Option[] = [];
+        for (let i = 0; i < select?.options.length; i++) {
           newOptions.push({
             value: select.options[i].value,
             text: select.options[i].innerText,
@@ -30,16 +41,14 @@ const MultiSelect = ({ id }) => {
     setShow(true);
   };
 
-  const isOpen = () => {
-    return show === true;
-  };
+  const isOpen = () => show;
 
-  const select = (index, event) => {
+  const selectOption = (index: number, event: React.MouseEvent) => {
     const newOptions = [...options];
 
     if (!newOptions[index].selected) {
       newOptions[index].selected = true;
-      newOptions[index].element = event.currentTarget;
+      newOptions[index].element = event.currentTarget as HTMLElement;
       setSelected([...selected, index]);
     } else {
       const selectedIndex = selected.indexOf(index);
@@ -52,7 +61,7 @@ const MultiSelect = ({ id }) => {
     setOptions(newOptions);
   };
 
-  const remove = (index) => {
+  const removeOption = (index: number) => {
     const newOptions = [...options];
     const selectedIndex = selected.indexOf(index);
 
@@ -64,23 +73,23 @@ const MultiSelect = ({ id }) => {
   };
 
   const selectedValues = () => {
-    return selected.map((option) => options[option].value);
+    return selected.map((index) => options[index].value);
   };
 
   useEffect(() => {
-    const clickHandler = ({ target }) => {
+    const clickHandler = (event: MouseEvent) => {
       if (!dropdownRef.current) return;
       if (
         !show ||
-        dropdownRef.current.contains(target) ||
-        trigger.current.contains(target)
+        dropdownRef.current.contains(event.target as Node) ||
+        trigger.current?.contains(event.target as Node)
       )
         return;
       setShow(false);
     };
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
-  });
+  }, [show]);
 
   return (
     <div className="relative z-50">
@@ -89,14 +98,14 @@ const MultiSelect = ({ id }) => {
       </label>
       <div>
         <select className="hidden" id={id}>
-          <option value="1">Option 2</option>
-          <option value="2">Option 3</option>
-          <option value="3">Option 4</option>
-          <option value="4">Option 5</option>
+          <option value="1">Option 1</option>
+          <option value="2">Option 2</option>
+          <option value="3">Option 3</option>
+          <option value="4">Option 4</option>
         </select>
 
         <div className="flex flex-col items-center">
-          <input name="values" type="hidden" defaultValue={selectedValues()} />
+          <input name="values" type="hidden" value={selectedValues().join(",")} />
           <div className="relative z-20 inline-block w-full">
             <div className="relative flex flex-col items-center">
               <div ref={trigger} onClick={open} className="w-full">
@@ -112,7 +121,7 @@ const MultiSelect = ({ id }) => {
                         </div>
                         <div className="flex flex-auto flex-row-reverse">
                           <div
-                            onClick={() => remove(index)}
+                            onClick={() => removeOption(index)}
                             className="cursor-pointer pl-2 hover:text-danger"
                           >
                             <svg
@@ -140,7 +149,7 @@ const MultiSelect = ({ id }) => {
                         <input
                           placeholder="Select an option"
                           className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
-                          defaultValue={selectedValues()}
+                          defaultValue={selectedValues().join(",")}
                         />
                       </div>
                     )}
@@ -185,7 +194,7 @@ const MultiSelect = ({ id }) => {
                       <div key={index}>
                         <div
                           className="w-full cursor-pointer rounded-t border-b border-stroke hover:bg-primary/5 dark:border-form-strokedark"
-                          onClick={(event) => select(index, event)}
+                          onClick={(event) => selectOption(index, event)}
                         >
                           <div
                             className={`relative flex w-full items-center border-l-2 border-transparent p-2 pl-2 ${

@@ -4,15 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import { useSession } from "next-auth/react";
-import { roleRoutes } from "@/routes/roleRoutes";
+import { RoleRoutes } from "@/routes/roleRoutes";
 import { useRouter } from "next/router";
 
-const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
+interface SidebarInterface {
+  sidebarOpen?: boolean;
+  setSidebarOpen?: (open: boolean) => void;
+}
+
+const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarInterface) => {
   const router = useRouter();
   const { pathname } = router;
 
-  const trigger = useRef(null);
-  const sidebar = useRef(null);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const sidebar = useRef<HTMLDivElement>(null);
 
   const { data } = useSession();
 
@@ -26,12 +31,12 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
   // close on click outside
   useEffect(() => {
-    const clickHandler = ({ target }) => {
+    const clickHandler = ({ target }: MouseEvent) => {
       if (!sidebar.current || !trigger.current) return;
       if (
         !sidebarOpen ||
-        sidebar.current.contains(target) ||
-        trigger.current.contains(target)
+        sidebar.current.contains(target as Node) ||
+        trigger.current.contains(target as Node)
       )
         return;
       setSidebarOpen(false);
@@ -42,7 +47,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }) => {
 
   // close if the esc key is pressed
   useEffect(() => {
-    const keyHandler = ({ key }) => {
+    const keyHandler = ({ key }: KeyboardEvent) => {
       if (!sidebarOpen || key !== "Escape") return;
       setSidebarOpen(false);
     };

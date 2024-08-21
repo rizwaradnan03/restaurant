@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-const SwitcherThree = ({ setSwitchPromoStatus }) => {
+interface SwitcherThreeInterface {
+  setSwitchPromoStatus: (open: boolean) => void
+}
+
+const SwitcherThree = ({ setSwitchPromoStatus }: SwitcherThreeInterface) => {
   const [enabled, setEnabled] = useState(false);
 
   const handleChangeStatus = () => {

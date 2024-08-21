@@ -1,9 +1,14 @@
 import { ReactNode, useState } from "react";
 
+interface SidebarLinkGroupInterface {
+  children: (handleClick: () => void, open?: boolean) => ReactNode;
+  activeCondition?: boolean;
+}
+
 const SidebarLinkGroup = ({
   children,
   activeCondition,
-}) => {
+}: SidebarLinkGroupInterface) => {
   const [open, setOpen] = useState(activeCondition);
 
   const handleClick = () => {

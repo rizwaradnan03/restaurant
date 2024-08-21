@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-const ForgotPassword = ({ email }) => {
+const ForgotPassword = ({ email } : {email: string}) => {
   return (
     <>
       <Head>
