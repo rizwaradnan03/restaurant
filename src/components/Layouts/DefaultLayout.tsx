@@ -9,6 +9,7 @@ interface DefaultLayoutInterface {
 
 export default function DefaultLayout({ children }: DefaultLayoutInterface) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [titleName, setTitleName] = useState("")
   return (
     <>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
@@ -26,7 +27,7 @@ export default function DefaultLayout({ children }: DefaultLayoutInterface) {
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
             <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {children}
+              {children, setTitleName}
             </div>
           </main>
           {/* <!-- ===== Main Content End ===== --> */}

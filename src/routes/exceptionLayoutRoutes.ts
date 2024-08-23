@@ -1,5 +1,6 @@
 export const ExceptionLayoutRoutes = [
     // '/',
     '/auth/login',
-    '/_error'
+    '/_error',
+    '/no-access'
 ]

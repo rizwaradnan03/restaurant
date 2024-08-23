@@ -15,7 +15,6 @@ interface SidebarInterface {
 
 const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarInterface) => {
   const token = useSession();
-  console.log("isi token", token);
   const role = token.data?.user.role;
 
   const router = useRouter();

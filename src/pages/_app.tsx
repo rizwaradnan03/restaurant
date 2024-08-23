@@ -4,6 +4,13 @@ import "@/styles/style.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import { usePathname } from "next/navigation";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export default function App({
   Component,
@@ -12,15 +19,17 @@ export default function App({
   const pathName = usePathname();
   return (
     <>
-      <SessionProvider session={session}>
-        {ExceptionLayoutRoutes.includes(pathName) ? (
-          <Component {...pageProps} />
-        ) : (
-          <DefaultLayout>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider session={session}>
+          {ExceptionLayoutRoutes.includes(pathName) ? (
             <Component {...pageProps} />
-          </DefaultLayout>
-        )}
-      </SessionProvider>
+          ) : (
+            <DefaultLayout>
+              <Component {...pageProps} />
+            </DefaultLayout>
+          )}
+        </SessionProvider>
+      </QueryClientProvider>
     </>
   );
 }
