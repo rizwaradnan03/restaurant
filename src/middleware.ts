@@ -7,4 +7,12 @@ export function mainMiddleware(req) {
   return res;
 }
 
-export default withAuth(mainMiddleware, ["/", "/cashier/pos", "/dashboard",]);
+export default withAuth(mainMiddleware);
+
+export const config = {
+  matcher: [
+    '/',
+    '/dashboard',
+    '/class/:path*',
+  ]
+};

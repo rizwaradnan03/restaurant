@@ -6,6 +6,7 @@ import SidebarLinkGroup from "./SidebarLinkGroup";
 import { useSession } from "next-auth/react";
 import { RoleRoutes } from "@/routes/roleRoutes";
 import { useRouter } from "next/router";
+import { MdDashboard } from "react-icons/md";
 
 interface SidebarInterface {
   sidebarOpen?: boolean;
@@ -13,6 +14,10 @@ interface SidebarInterface {
 }
 
 const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarInterface) => {
+  const token = useSession();
+  console.log("isi token", token);
+  const role = token.data?.user.role;
+
   const router = useRouter();
   const { pathname } = router;
 
@@ -21,7 +26,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarInterface) => {
 
   const { data } = useSession();
 
-  const sidebarData = data?.user?.role_access_paths;
+  // const sidebarData = data?.user?.role_access_paths;
 
   let storedSidebarExpanded = "true";
 
@@ -119,23 +124,28 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarInterface) => {
 
             <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
-              {sidebarData?.map((item, index) => (
-                <React.Fragment key={index}>
-                  <li>
-                    <Link
-                      href={item.path}
-                      className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                        (pathname === "/" || pathname.includes(item.path)) &&
-                        "bg-graydark dark:bg-meta-4"
-                      }`}
-                    >
-                      {/* {item.icon} */}
-                      <i className={`fi fi-${item.flaticon_code}`}></i>
-                      {item.title}
-                    </Link>
-                  </li>
-                </React.Fragment>
-              ))}
+              {RoleRoutes[role] ? (
+                RoleRoutes[role].map((item, index) => (
+                  <React.Fragment key={index}>
+                    {/* {console.log("isi icon", <MdDashboard />)} */}
+                    <li>
+                      <Link
+                        href={item.path}
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          (pathname === "/" || pathname.includes(item.path)) &&
+                          "bg-graydark dark:bg-meta-4"
+                        }`}
+                      >
+                        {item.icon}
+                        {/* <i className={`fi fi-${item.flaticon_code}`}></i> */}
+                        {item.title}
+                      </Link>
+                    </li>
+                  </React.Fragment>
+                ))
+              ) : (
+                <li>belum terrender</li>
+              )}
             </ul>
           </div>
         </nav>

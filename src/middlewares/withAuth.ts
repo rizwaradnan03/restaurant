@@ -1,11 +1,10 @@
-import { RoleRoutes, roleRoutes } from "@/routes/roleRoutes";
+import { RoleRoutes } from "@/routes/roleRoutes";
 import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
-export default function withAuth(middleware, requireAuth) {
+export default function withAuth(middleware) {
   return async (req, next) => {
     const pathName = req.nextUrl.pathname;
-    if (requireAuth.includes(pathName)) {
       const token = await getToken({
         req,
         secret: process.env.SECRET_KEY,
@@ -21,11 +20,10 @@ export default function withAuth(middleware, requireAuth) {
 
       // Dapatkan peran pengguna dari token
       const userRolePaths = RoleRoutes[token.role];
-      const hasAccess = userRolePaths.some((route) => route === pathName);
+      const hasAccess = userRolePaths.some((route) => route.path === pathName);
       if (!hasAccess) {
         return NextResponse.redirect(new URL("/", req.url));
       }
       return middleware(req, next);
-    }
   };
 }
