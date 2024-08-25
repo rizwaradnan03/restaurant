@@ -19,17 +19,17 @@ export default function App({
   const pathName = usePathname();
   return (
     <>
-      <QueryClientProvider client={queryClient}>
+      {/* <QueryClientProvider client={queryClient}> */}
+      {ExceptionLayoutRoutes.includes(pathName) ? (
+        <Component {...pageProps} />
+      ) : (
         <SessionProvider session={session}>
-          {ExceptionLayoutRoutes.includes(pathName) ? (
+          <DefaultLayout>
             <Component {...pageProps} />
-          ) : (
-            <DefaultLayout>
-              <Component {...pageProps} />
-            </DefaultLayout>
-          )}
+          </DefaultLayout>
         </SessionProvider>
-      </QueryClientProvider>
+      )}
+      {/* </QueryClientProvider> */}
     </>
   );
 }

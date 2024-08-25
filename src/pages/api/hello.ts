@@ -10,9 +10,9 @@ export default async function handler(req, res) {
 
   // Data yang akan dimasukkan secara langsung
   const data = {
-    email: "rizwarbyan123@gmail.com",
+    email: "rizwar.adnanbyantara@gmail.com",
     password: "byandanshufi321",
-    name: "rizwar",
+    name: "rozroz",
   };
 
   // Check if the user already exists
